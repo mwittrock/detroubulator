@@ -1,0 +1,467 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - FAQ</title>
+		<link rel="stylesheet" type="text/css" href="styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - FAQ</h1>
+			<ol>
+				<li>
+					<p>
+						<b><a href="#general">General questions</a></b>
+					</p>
+					<ol>
+						<li><a href="#general_1">What is Detroubulator?</a></li>
+						<li><a href="#general_2">Is 'detroubulator' even a proper word?</a></li>
+						<li><a href="#general_3">Where can I find the latest version of Detroubulator?</a></li>
+						<li><a href="#general_4">Is there a Detroubulator forum or mailing list available?</a></li>
+					</ol>
+				</li>
+				<li>
+					<p>
+						<b><a href="#installrun">Installing and running Detroubulator</a></b>
+					</p>
+					<ol>
+						<li><a href="#installrun_1">What are Detroubulator's system requirements?</a></li>
+						<li><a href="#installrun_2">Why do I need JCo on my system?</a></li>
+						<li><a href="#installrun_3">How do I install Detroubulator?</a></li>
+						<li><a href="#installrun_4">How do I uninstall Detroubulator?</a></li>
+						<li><a href="#installrun_5">How do I run Detroubulator if there's no launch script for my operating system in the <code>bin</code> directory?</a></li>
+						<li><a href="#installrun_6">Why does Detroubulator create a zero byte <code>detroubulator.log</code> file?</a></li>
+						<li><a href="#installrun_7">I have a Java version in my path that's older than the version Detroubulator requires. What can I do?</a></li>
+						<li><a href="#installrun_8">Why do I need to install the Detroubulator function modules on my XI system?</a></li>
+						<li><a href="#installrun_9">How do I install the Detroubulator function modules?</a></li>
+						<li><a href="#installrun_10">What is SAPlink?</a></li>
+					</ol>
+				</li>
+				<li>
+					<p>
+						<b><a href="#unittest">Unit testing with Detroubulator</a></b>
+					</p>
+					<ol>
+						<li><a href="#unittest_1">What are the benefits of automated unit testing?</a></li>
+						<li><a href="#unittest_2">Does automated unit testing prevent bugs from occuring?</a></li>
+						<li><a href="#unittest_3">Can I use Detroubulator to test mapping programs that don't output XML?</a></li>
+						<li><a href="#unittest_4">Why can't I reference the input document in my content assertion XPath expression?</a></li>
+						<li><a href="#unittest_5">Why not compare the mapping output to a full XML document?</a></li>
+						<li><a href="#unittest_6">Which types of mapping program can Detroubulator execute?</a></li>
+					</ol>
+				</li>	
+				<li>
+					<p>
+						<b><a href="#source">Detroubulator Java source code</a></b>
+					</p>
+					<ol>
+						<li><a href="#source_1">Is the Detroubulator Java source code available?</a></li>
+						<li><a href="#source_2">How do I build Detroubulator from source?</a></li>
+						<li><a href="#source_3">Where can I find the latest version of the source?</a></li>
+						<li><a href="#source_4">Where's the Javadoc documentation?</a></li>
+					</ol>
+				</li>
+				<li>
+					<p>
+						<b><a href="#sapxi">The SAP XI environment</a></b>
+					</p>
+					<ol>
+						<li><a href="#sapxi_1">Where can I find the <code>aii_map_api.jar</code> file?</a></li>
+						<li><a href="#sapxi_2">Is SAP JCo available for my platform?</a></li>
+						<li><a href="#sapxi_3">How do I determine the object ID of a Software Component Version?</a></li>
+						<li><a href="#sapxi_4">How do I locate the program ID used by the JCo connection?</a></li>
+						<li><a href="#sapxi_5">How does Detroubulator communicate with SAP XI?</a></li>
+						<li><a href="#sapxi_6">How do I determine the gateway's port number?</a></li>
+						<li><a href="#sapxi_7">Which versions of JCo are supported by Detroubulator?</a></li>
+						<li><a href="#sapxi_8">How do I determine which JCo version Detroubulator is using?</a></li>
+						<li><a href="#sapxi_9">Detroubulator reports 'JCO_ERROR_COMMUNICATION'. What's wrong?</a></li>
+						<li><a href="#sapxi_10">Why am I getting a 'Detroubulator custom ABAP function Z_XI_DTRB_MAPPING_GET_STEPS not found on server' error?</a></li>
+						<li><a href="#sapxi_11">Why am I getting a 'Detroubulator custom ABAP function Z_XI_DTRB_MAPPING_EXECUTE not found on server' error?</a></li>
+					</ol>
+				</li>
+				<li>
+					<p>
+						<b><a href="#testfile">The Detroubulator test file</a></b>
+					</p>
+					<ol>
+						<li><a href="#testfile_1">Isn't leaving an XI username and password in the test file a security risk?</a></li>
+						<li><a href="#testfile_2">Isn't it inconvenient that you have to identify SWCVs by object ID?</a></li>
+						<li><a href="#testfile_3">Can I write my content assertions using XPath 2.0?</a></li>
+						<li><a href="#testfile_4">Where can I learn more about XPath?</a></li>
+					</ol>
+				</li>
+			  </ol>
+			<h2><a name="general">General questions</a></h2>
+			<ol>
+				<li>
+					<p>
+						<b><a name="general_1">What is Detroubulator?</a></b>
+					</p>
+					<p>
+						Detroubulator is a software tool for automated unit testing of SAP XI mapping programs. Detroubulator is free software, licensed under the GNU General Public License (GPL). You'll find the full text of the license in the file called <code>LICENSE</code>, located in the root of the Detroubulator archive. For more information on the GPL, please visit the <a href="http://www.gnu.org/copyleft/gpl.html">GPL homepage</a>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="general_2">Is 'detroubulator' even a proper word?</a></b>
+					</p>
+					<p>
+						Granted, you won't find it in the dictionary (yet!). <i>Detroubulate</i> is a Simpsons-inspired neologism meaning to get someone out of trouble. Wikipedia has a great page of <a href="http://en.wikipedia.org/wiki/Made-up_words_in_The_Simpsons">neologisms coined by the writers of The Simpsons</a>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="general_3">Where can I find the latest version of Detroubulator?</a></b>
+					</p>
+					<p>
+						The latest version can be downloaded from the <a href="http://www.applicon.dk/detroubulator">Detroubulator homepage</a>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="general_4">Is there a Detroubulator forum or mailing list available?</a></b>
+					</p>
+					<p>
+						Yes. The <a href="http://groups.google.com/group/detroubulator-users"><code>detroubulator-users</code></a> list on Google Groups is the official Detroubulator mailing list. All questions, comments and suggestions are more than welcome on this list.
+					</p>
+				</li>
+			</ol>
+			<h2><a name="installrun">Installing and running Detroubulator</a></h2>
+			<ol>
+				<li>
+					<p>
+						<b><a name="installrun_1">What are Detroubulator's system requirements?</a></b>
+					</p>
+					<p>
+						To run Detroubulator, you need to have a Java 6 runtime and the SAP JCo libraries installed on your system. SAP JCo can be downloaded from <a href="http://service.sap.com/connectors">service.sap.com/connectors</a> (requires an SAP Service Marketplace user). You will also need a copy of the <code>aii_map_api.jar</code> file. If you don't have this file, please see <a href="#sapxi_1">&quot;Where can I find the <code>aii_map_api.jar</code> file?&quot;</a> in this FAQ. In order to install the Detroubulator function modules, you will need the SAPlink software on your XI system. For more information, please see <a href="#installrun_8">&quot;Why do I need to install the Detroubulator function modules on my XI system?&quot;</a>, <a href="#installrun_9">&quot;How do I install the Detroubulator function modules?&quot;</a> and <a href="#installrun_10">&quot;What is SAPlink?&quot;</a> below.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_2">Why do I need JCo on my system?</a></b>
+					</p>
+					<p>
+						Detroubulator executes mapping programs in the remote XI server by calling an RFC. The JCo libraries make it possible to execute RFCs from within a Java program. For more information on this topic, please see <a href="#sapxi_5">&quot;How does Detroubulator communicate with SAP XI?&quot;</a> in this FAQ
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_3">How do I install Detroubulator?</a></b>
+					</p>
+					<p>
+						Installation is a straightforward process:
+					</p>
+					<ol>
+						<li>Unpack the <code>$release.archive$</code> archive. It contains the <code>$inst.dir$</code> directory, which you can move to a location of your choice.</li>
+						<li>Add the <code>$inst.dir$/bin</code> directory to your path.</li>
+						<li>Copy the <code>aii_map_api.jar</code> file from your XI server to the <code>$inst.dir$/lib</code> directory</li>
+						<li>Install the Detroubulator function modules on your XI system (optional)</li>
+					</ol>
+					<p>
+						Installing the Detroubulator function modules is required if you want to test ABAP mapping programs, ABAP XSLT mapping programs or interface mappings. For more information on how to install them, please refer to <a href="#installrun_9">&quot;How do I install the Detroubulator function modules?&quot;</a> in this FAQ.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_4">How do I uninstall Detroubulator?</a></b>
+					</p>
+					<p>
+						Detroubulator does not update any system files or registries on your system. This means that removing the software is a matter of deleting the Detroubulator files and removing the <code>bin</code> subdirectory from your path. If you have installed the Detroubulator ABAP function modules for handling ABAP mapping programs, ABAP XSLT mapping programs and interface mappings, simply delete the function group <code>ZXI_DTRB</code> from your XI server. This will also delete the two function modules <code>Z_XI_DTRB_MAPPING_EXECUTE</code> and <code>Z_XI_DTRB_MAPPING_GET_STEPS</code>.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_5">How do I run Detroubulator if there's no launch script for my operating system in the <code>bin</code> directory?</a></b>
+					</p>
+					<p>
+						The launch scripts in the <code>bin</code> directory are merely a convenience; you can run Detroubulator just fine without them. To do so, you need to do two things:
+					</p>
+					<ol>
+						<li>Make sure that the <code>$detroubulator.jar$</code> and <code>aii_map_api.jar</code> JAR files are in your class path</li>
+						<li>Execute the <code>main</code> method of the <code>org.detroubulator.core.Launcher</code> class by running the following command from the command line: <code>java -Djava.util.logging.config.class=org.detroubulator.core.Logging org.detroubulator.core.Launcher</code></li>
+					</ol>
+					<p>
+						Detroubulator assumes that your test file is located in the current directory and that it's named <code>test.xml</code>. If this isn't the case, you need to pass the path to your test file as a command line argument.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_6">Why does Detroubulator create a zero byte <code>detroubulator.log</code> file?</a></b>
+					</p>
+					<p>
+						When Detroubulator is run with the <code>-debug</code> option, a bunch of runtime information is written to the <code>detroubulator.log</code> file for debugging purposes. The file, however, is created by Java's logging framework whether Detroubulator is in debugging mode or not.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_7">I have a Java version in my path that's older than the version Detroubulator requires. What can I do?</a></b>
+					</p>
+					<p>
+						If you need to have an older version of Java in your path, you have two options. The first option is to set the <code>JAVA_HOME</code> environment variable. If this variable is set, Detroubulator will use its value to locate the <code>java</code> program. If you can't set the <code>JAVA_HOME</code> environment variable, your other option is to set the <code>DTRB_JAVA_HOME</code> environment variable instead. This variable is unique to Detroubulator and setting it will therefore not disrupt the operation of other programs.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_8">Why do I need to install the Detroubulator function modules on my XI system?</a></b>
+					</p>
+					<p>
+						In the standard XI system there are no remote enabled functions for calling ABAP, ABAP XSLT or interface mappings, so these functions have been created as part of Detroubulator. However, if you are happy without this particular functionality in Detroubulator, you do not need to install the functions.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_9">How do I install the Detroubulator function modules?</a></b>
+					</p>
+					<p>
+						The Detroubulator function modules are installed using SAPlink. In addition to the basic SAPlink installation, the Function Groups plug-in is also required to install Detroubulator. The Detroubulator slinky, which is the SAPlink XML file containing the Detroubulator function modules, is named <code>FUGR_ZXI_DTRB.slnk</code>. You'll find it in the <code>abap</code> directory directly below the <code>$inst.dir$</code> directory.</p>
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="installrun_10">What is SAPlink?</a></b>
+					</p>
+					<p>
+						SAPlink is an open source tool that lets you share ABAP code easily. For more information, please visit <a href="http://www.saplink.org/">the SAPlink web site</a>.
+					</p>
+				</li>
+			</ol>
+			<h2><a name="unittest">Unit testing with Detroubulator</a></h2>
+			<ol>
+				<li>
+					<p>
+						<b><a name="unittest_1">What are the benefits of automated unit testing?</a></b>
+					</p>
+					<p>
+						The main benefit is that automated unit testing greatly reduces the effort required to repeatedly test your mapping programs. While it's definitely possible to unit test manually in the Integration Builder, it's is a time-consuming and error-prone task. Furthermore, it's a task that must, in an ideal world at least, be done every time a change is made to the mapping program. Detroubulator lets you write your unit tests once and for all and run them at the press of a button. The minimal effort required to run your unit tests means that testing can become an integrated part of development rather than an effort that only takes place when development is complete. Having a suite of unit tests available also makes it easier and safer to make changes to an existing mapping program; running your test suite at each step of the way builds confidence that the changes made to the mapping program didn't inadvertently introduce errors.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="unittest_2">Does automated unit testing prevent bugs from occuring?</a></b>
+					</p>
+					<p>
+						Unfortunately not. It does, however, make it easier for you to know when the bug has been fixed and also to prevent the same bug from occuring again. When a bug report is filed, before you go to work on solving the problem, add a unit test that exposes the bug, i.e. a unit test that fails. When all your unit tests pass again, the bug has been fixed and you will know that you didn't introduce new bugs in the course of the debugging process.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="unittest_3">Can I use Detroubulator to test mapping programs that don't output XML?</a></b>
+					</p>
+					<p>
+						That depends on the assertions you are using. The content and validation assertions assume that the mapping program's output is an XML document. If it isn't, they will throw an exception. The exception assertion works no matter what, since it never tries to inspect the mapping program's output. The external assertion lets you examine the mapping program's output down to the byte level. This makes an external assertion the only option, if the mapping program doesn't output XML. In general, though, your mapping programs should output XML and XML only. If you need to map from or to e.g. CSV files or binary formats, the best practice is to perform the transformation in an adapter module, i.e. before the message enters the Integration Engine or after the message has left it.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="unittest_4">Why can't I reference the input document in my content assertion XPath expression?</a></b>
+					</p>
+					<p>
+						While it would definitely be technically possible, we decided against adding this feature. The main reason was the general principle that a unit test should be sufficiently simple as to not require its own set of tests. An XPath expression that references both the input document and the mapping program's output, could easily become so complicated, that it would violate this principle.
+				</li>
+				<li>
+					<p>
+						<b><a name="unittest_5">Why not compare the mapping output to a full XML document?</a></b>
+					</p>
+					<p>
+						The main rationale behind this design decision was that we wanted to be able to explicitly exercise those parts of a mapping program, that are particularly prone to fail and therefore testworthy. The assertions of a test case document which parts of the mapping program are being exercised by that particular test case. Secondly, comparing the mapping output to a static XML document on disk is fragile with regard to timestamps, whitespace, namespace prefixes etc.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="unittest_6">Which types of mapping program can Detroubulator execute?</a></b>
+					</p>
+					<p>
+						Detroubulator can execute all mapping programs currently available in XI 3.0/PI 7.0.
+					</p>
+				</li>
+			</ol>
+			<h2><a name="source">Detroubulator Java source code</a></h2>
+			<ol>
+				<li>
+					<p>
+						<b><a name="source_1">Is the Detroubulator Java source code available?</a></b>
+					</p>
+					<p>
+						It is indeed. The full source code is distributed with every Detroubulator release. You'll find it in the $source.archive$ file in the root of the distribution archive. The code is also available in a public Subversion repository (please see <a href="#source_3">&quot;Is there a publicly available Detroubulator source code repository?&quot;</a> below for details).
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="source_2">How do I build Detroubulator from source?</a></b>
+					</p>
+					<p>
+						Detroubulator is built from source using the Ant build tool. Instructions can be found in the <a href="HowToBuild.html">&quot;How to build Detroubulator&quot;</a> document.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="source_3">Is there a publicly available Detroubulator source code repository?</a></b>
+					</p>
+					<p>
+						Yes. The Detroubulator source code is stored in a <a href="http://code.google.com/p/detroubulator/source">Subversion repository</a> hosted by Google. To check the latest source code out of the repository, run the following command: 
+					</p>
+					<pre>
+	svn checkout http://detroubulator.googlecode.com/svn/trunk/ detroubulator
+					</pre>
+					<p>
+						Please keep in mind that the latest source may be unstable (in fact it might not even compile).
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="source_4">Where's the Javadoc documentation?</a></b>
+					</p>
+					<p>
+						There's no Javadoc documentation in the current release, unfortunately. It will be added in an upcoming release. In the meantime, if you have questions about the source, feel free to post them to the Detroubulator mailing list (see <a href="#general_4">&quot;Is there a Detroubulator forum or mailing list available?&quot;</a> in this FAQ for details).
+					</p>
+				</li>
+			</ol>
+			<h2><a name="sapxi">The SAP XI environment</a></h2>
+			<ol>
+				<li>
+					<p>
+						<b><a name="sapxi_1">Where can I find the <code>aii_map_api.jar</code> file?</a></b>
+					</p>
+					<p>
+						<a href="https://service.sap.com/sap/support/notes/636447">SAP note 636447</a> (&quot;Location of StreamTransformation interface&quot;) answers this question, but the answer does not seem to be current any longer. The file can be located on your XI system in the following directory: <code>/usr/sap/&lt;SID&gt;/DVEBMGS&lt;SYSNO&gt;/j2ee/cluster/server0/apps/sap.com/com.sap.xi.services</code>. If there are multiple server nodes in your XI system, you may need to replace <code>server0</code> in this path with e.g. <code>server1</code> or similar in the unlikely event that the XI tools have not been deployed to all server nodes.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_2">Is SAP JCo available for my platform?</a></b>
+					</p>
+					<p>
+						<a href="https://service.sap.com/sap/support/notes/549268">SAP note 549268</a> (&quot;SAP JCo release and support strategy&quot;) contains a list of all platforms that JCo is supported on. Please note that access to SAP notes requires an SAP Service Marketplace user.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_3">How do I determine the object ID of a Software Component Version?</a></b>
+					</p>
+					<p>
+						In the Integration Builder object navigation area, double-click the SWCV in question. In the &quot;Display Software Component Version&quot; work area, select the menu option &quot;Properties...&quot; from the &quot;Software Component Version&quot; menu. The &quot;Object Attributes&quot; dialog is displayed, containing the object ID you require.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_4">How do I locate the program ID used by the JCo connection?</a></b>
+					</p>
+					<p>
+						Go to transaction <code>SM59</code> (&quot;Display and Maintain RFC Destinations&quot;) on the XI system that you want to connect to. Locate the RFC destination called &quot;AI_RUNTIME_JCOSERVER&quot; under &quot;TCP/IP connections&quot; and double-click it. The program ID you require can now be found on the &quot;Technical Settings&quot; tab.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_5">How does Detroubulator communicate with SAP XI?</a></b>
+					</p>
+					<p>
+						Detroubulator invokes the XI mapping runtime the same way that the integration server pipeline invokes it during normal XI operations. The integration server pipeline is implemented in the ABAP stack while the mapping runtime is implemented in the Java stack. The pipeline calls the function module <code>SMPP_CALL_JAVA_RUNTIME3</code> at RFC destination &quot;AI_RUNTIME_JCOSERVER&quot;. This destination is linked to a program ID which is registered by the JCo RFC Provider service in the Java stack in the server's gateway. The JCo RFC Provider accepts the function call and dispatches it to the relevant session bean, which executes the requested mapping program(s). For more details of this process, please see <a href="https://weblogs.sdn.sap.com/pub/wlg/3431">this SDN blog</a>.
+					</p>
+					<p>
+						Detroubulator piggy-backs this process by using JCo to connect to the server's gateway and executing the same function (<code>SMPP_CALL_JAVA_RUNTIME3</code>). That's why Detroubulator needs the program ID from your RFC destination. In order to correctly encode the parameters for this function call, Detroubulator additionally needs to access the function module metadata of the XI ABAP repository.
+					</p>
+					<p>
+					In addition to using the standard function outlined above, Detroubulator also implements two new ABAP function modules for handling ABAP, ABAP XSLT and interface mappings. The first, <code>Z_XI_DTRB_MAPPING_EXECUTE</code>, is simply a remote-enabled function wrapper for executing a single ABAP og ABAP XSLT mapping. The second, <code>Z_XI_DTRB_MAPPING_GET_STEPS</code>, wraps a standard XI method for retrieving the list of mapping steps in an interface mapping. Detroubulator executes each step in turn, effectively mimicking the XI mapping runtime.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_6">How do I determine the gateway's port number?</a></b>
+					</p>
+					<p>
+						The port number of the gateway, which must be specified in the test file's server configuration, is 33&lt;system number&gt;. I.e. if your system number is 10, the gateway's port number is 3310. If you have SAP client software installed on your system, you can refer to this port as sapgw&lt;system number&gt;.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_7">Which versions of JCo are supported by Detroubulator?</a></b>
+					</p>
+					<p>
+						Detroubulator requires SAP JCo version 2.1. Version 2.0 and earlier will not work. At the time of writing, the latest JCo version is 2.1.7, but Detroubulator has also been tested with JCo version 2.1.6.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_8">How do I determine which JCo version Detroubulator is using?</a></b>
+					</p>
+					<p>
+						Run Detroubulator with the <code>-debug</code> option to enable debugging. Then look in the <code>detroubulator.log</code> file for a line similar to:
+					</p>
+					<pre>
+	INFO: JCo version: 2.1.6 (2005-06-20)
+					</pre>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_9">Detroubulator reports 'JCO_ERROR_COMMUNICATION'. What's wrong?</a></b>
+					</p>
+					<p>
+						Look for the file <code>dev_rfc.trc</code> in the directory from which you ran Detroubulator. SAP JCo appends detailed error information to this file every time an RFC error occurs. Here's an example of the file's contents:
+					</p>
+					<pre>
+	**** ERROR file opened at 20061002 202332 Romance Daylig, SAP-REL 640,0,140 RFC-VER 3 845491 MT-SL
+	T:2644 Error in program 'javaw': ======&gt; Name or password is incorrect. Please re-enter
+	T:2644 Error in program 'javaw': &lt;* RfcReceive [1] : returns 3:RFC_SYS_EXCEPTION
+					</pre>
+					<p>
+						In this case, a wrong username or password was provided.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_10">Why am I getting a 'Detroubulator custom ABAP function Z_XI_DTRB_MAPPING_GET_STEPS not found on server' error?</a></b>
+					</p>
+					<p>
+						In order to test ABAP mapping programs, ABAP XSLT mapping programs and interface mappings, you need to install two Detroubulator function modules on your XI system. If they haven't been installed, you will get the error in question. For more information on the Detroubulator function modules, please see <a href="#installrun_8">&quot;Why do I need to install the Detroubulator function modules on my XI system?&quot;</a> and <a href="#installrun_9">&quot;How do I install the Detroubulator function modules?&quot;</a> in this FAQ.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="sapxi_11">Why am I getting a 'Detroubulator custom ABAP function Z_XI_DTRB_MAPPING_EXECUTE not found on server' error?</a></b>
+					</p>
+					<p>
+						Please see the answer to <a href="#sapxi_10">&quot;Why am I getting a 'Detroubulator custom ABAP function Z_XI_DTRB_MAPPING_GET_STEPS not found on server' error?&quot;</a>.
+					</p>
+				</li>
+			</ol>
+			<h2><a name="testfile">The Detroubulator test file</a></h2>
+			<ol>
+				<li>
+					<p>
+						<b><a name="testfile_1">Isn't leaving an XI username and password in the test file a security risk?</a></b>
+					</p>
+					<p>
+						It is. However, you don't need to leave the password in the test file. If the password is not present at runtime, you will be prompted for it. For interactive use, this is the more secure way to run Detroubulator. If you want to run Detroubulator unattended, though, you need to leave the password in the test file. For a definitive answer to whether this is safe in your environment, see your local system administrator.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="testfile_2">Isn't it inconvenient that you have to identify SWCVs by object ID?</a></b>
+					</p>
+					<p>
+						We think so too. Identifying SWCVs by name rather than object ID is definitely a feature we want to implement in a future version of Detroubulator.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="testfile_3">Can I write my content assertions using XPath 2.0?</a></b>
+					</p>
+					<p>
+						Unfortunately not. For the moment we're using the Java Development Kit's built-in XPath classes (package <code>javax.xml.xpath</code>) and they don't support XPath version 2.0 at the time of writing.
+					</p>
+				</li>
+				<li>
+					<p>
+						<b><a name="testfile_4">Where can I learn more about XPath?</a></b>
+					</p>
+					<p>
+						The <a href="http://en.wikipedia.org/wiki/XPath">Wikipedia XPath page</a> is a good starting point that also contains links to a couple of tutorials. The official specification is the <a href="http://www.w3.org/TR/xpath">W3C XPath version 1.0 recommendation</a>. Compared to other XML standards, the specification is actually fairly short and readable.
+					</p>
+				</li>
+			</ol>
+
+		</div>
+
+	</body>
+</html>

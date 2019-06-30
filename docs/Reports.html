@@ -1,0 +1,159 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - Reports</title>
+		<link rel="stylesheet" type="text/css" href="styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - Reports</h1>
+			<p>A Detroubulator report is a chunk of software that presents test results to you. <em>How</em> it does this varies: A report could send an email, create an HTML document, display the results on the screen, generate a spreadsheet etc. Detroubulator comes with four built-in reports and the option of adding your own, custom reports. This document tells you how to add reports to the test file, how to configure them, how the built-in reports work and how to write your own, custom reports.</p>
+	
+			<h2><a name="adding_configuring">Adding and configuring reports</a></h2>
+			<p>To add a report to the test file, you need to add a <code>&lt;testreport&gt;</code> element below the <code>&lt;reporting&gt;</code> element. The <code>&lt;testreport&gt;</code> element's <code>type</code> attribute determines what kind of report you're adding. To configure the report, i.e. supply information such as where an HTML document should be stored on disk, add a <code>&lt;configuration&gt;</code> element below the <code>&lt;testreport&gt;</code> element. The configuration consists of a number of <code>&lt;parameter&gt;</code> elements, each containing a name/value pair. Here's an example of adding and configuring an HTML report:</p>
+			
+			<pre>
+&lt;reporting&gt;
+    &lt;testreport type=&quot;html&quot;&gt;
+        &lt;configuration&gt;
+            &lt;parameter name=&quot;dumpdir&quot;&gt;dumped_output&lt;/parameter&gt;
+            &lt;parameter name=&quot;file&quot;&gt;results.html&lt;/parameter&gt;
+        &lt;/configuration&gt;
+    &lt;/testreport&gt;
+&lt;/reporting&gt;
+			</pre>
+			
+			<p>The test file schema dictates that the <code>&lt;reporting&gt;</code> element must contain at least one <code>&lt;testreport&gt;</code> element, i.e. you need to add at least one report in order to run your tests. This makes sense; without any reports, the test results would disappear into the void. You can, however, add as many reports as you like. This means, for example, that you can have your test results displayed on the screen (using the <a href="#console_report">console output report</a>) as well as written to disk as an HTML document (using the <a href="#html_report">HTML output report</a>).</p>
+	
+			<h2><a name="console_report">The console output report</a></h2>
+			<p>The console output report (<code>type=&quot;console&quot;</code>) writes details about the running test to the console window. If an assertion fails, the report displays the details of the error and dumps the mapping output to disk for later debugging. When all test cases in the test file have been run, the report displays a summary of the test results.</p>
+	
+			<h3>Supported parameters</h3>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Name</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>dumpdir</td>
+					<td>Yes</td>
+					<td>The path to the directory that the mapping output will be dumped to. The files will be named <code>Dump1.xml</code>, <code>Dump2.xml</code> etc.</td>
+				</tr>
+			</table>
+	
+			<h2><a name="audio_report">The audio cues report</a></h2>
+			<p>The audio cues report (<code>type=&quot;audio&quot;</code>) does not produce any text output. Instead, it plays one of two audio files, depending on whether the test completes with or without errors. Using audio cues, you can start a particularly time-consuming test running in the background and focus your attention elsewhere while it runs. Please note that the audio playback is performed using the Java Sound API. For information on supported audio file formats, please refer to this <a href="http://java.sun.com/products/java-media/sound/techReference/javasoundfaq.html#formats">FAQ entry</a>.</p>
+	
+			<h3>Supported parameters</h3>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Name</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>success</td>
+					<td>Yes</td>
+					<td>The path to the audio file that will be played if the test contains no failed assertions.</td>
+				</tr>
+				<tr>
+					<td>failure</td>
+					<td>Yes</td>
+					<td>The path to the audio file that will be played if the test contains one or more failed assertions.</td>
+				</tr>
+			</table>
+	
+			<h2><a name="xml_report">The XML output report</a></h2>
+			<p>The XML output report (<code>type=&quot;xml&quot;</code>) gathers test results while the test is running. When the test is complete, the report stores the combined test results in an XML document on disk. A <a href="sample/sample_report.xml">sample XML report</a> is available in the <code>docs/misc</code> directory. If the path to an XSLT stylesheet is provided in the report's configuration, the generated XML document will be transformed using this stylesheet and the result of the transformation written to disk. This is useful if, for example, you want to generate an HTML document with a custom design. The XML output report also dumps the mapping output to disk in case of failed assertions.</p>
+	
+			<h3>Supported parameters</h3>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Name</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>dumpdir</td>
+					<td>Yes</td>
+					<td>The path to the directory that the mapping output will be dumped to. The files will be named <code>Dump1.xml</code>, <code>Dump2.xml</code> etc.</td>
+				</tr>
+				<tr>
+					<td>file</td>
+					<td>Yes</td>
+					<td>The path to the file that the XML document will be written to.</td>
+				</tr>
+				<tr>
+					<td>stylesheet</td>
+					<td>No</td>
+					<td>The path to an XSLT stylesheet that will be used to transform the XML document.</td>
+				</tr>
+			</table>
+	
+			<h2><a name="html_report">The HTML output report</a></h2>
+		<p>The HTML output report (<code>type=&quot;html&quot;</code>) is a variation of the XML output report. The difference between the two is that the HTML output report uses a fixed, internal XSLT stylesheet to transform the generated XML document into an HTML formatted document intended for human readers. The stylesheet, <a href="misc/testreport_v110.xslt"><code>testreport_v110.xslt</code></a>, is available in the <code>docs/misc</code> directory.</p>
+	
+			<h3>Supported parameters</h3>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Name</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>dumpdir</td>
+					<td>Yes</td>
+					<td>The path to the directory that the mapping output will be dumped to. The files will be named <code>Dump1.xml</code>, <code>Dump2.xml</code> etc.</td>
+				</tr>
+				<tr>
+					<td>file</td>
+					<td>Yes</td>
+					<td>The path to the file that the HTML document will be written to.</td>
+				</tr>
+			</table>
+	
+			<h2><a name="custom_reports">Writing your own reports</a></h2>
+		<p>Sometimes you need to handle your test results in ways not supported by the built-in Detroubulator reports. You might, for instance, want to run Detroubulator unattended at night and receive error reports by email or have the failed tests stored in an issue tracking database. You can add the reporting features you need by writing your own, custom reports in the Java language. A Detroubulator report is a plain old Java class that has a no-arg constructor and implements the <code>org.detroubulator.reports.TestReport</code> interface. This interface extends two other interfaces, adding no methods of its own: <code>org.detroubulator.reports.TestListener</code> and <code>org.detroubulator.util.Configurable</code>.</p>
+			
+			<p><code>TestListener</code> is the listener interface for receiving test events, i.e. it contains methods that are invoked when testing starts and ends, when an assertion fails etc. The <code>Configurable</code> interface contains methods that lets objects of an implementing class be configured using the parameter values stored in the test file. The <code>org.detroubulator.reports.TestAdapter</code> class provides empty implementations of all the methods in the <code>TestListener</code> interface. If you're only interested in handling a subset of the test events, you can extend this class for convenience.</p>
+	
+			<p>The reports you've seen and used so far have been identified in the test file by the <code>type</code> attribute of the <code>&lt;testreport&gt;</code> element. Custom reports, however, don't have an associated type. Instead, they're identified by the name of the report's Java class. Here's an example of adding a custom report:</p>
+		
+			<pre>
+&lt;reporting&gt;
+    &lt;testreport class=&quot;my.custom.report.ClassName&quot;&gt;
+        &lt;configuration&gt;
+            &lt;parameter name=&quot;myparam&quot;&gt;Value goes here&lt;/parameter&gt;
+        &lt;/configuration&gt;
+    &lt;/testreport&gt;
+&lt;/reporting&gt;
+			</pre>
+			
+			<p>A <code>&lt;testreport&gt;</code> element must always have <em>either</em> a <code>type</code> attribute (indicating a built-in report) <em>or</em> a <code>class</code> attribute (indicating a custom report). You can mix and match custom and built-in reports below the <code>&lt;reporting&gt;</code> element.</p>
+			
+			<h3>Custom reports and the class path</h3>
+			
+			<p>In order to compile a custom report, you need to have the <code>$detroubulator.jar$</code> file in your class path. This JAR file contains the <code>TestListener</code> interface, the <code>Configurable</code> interface and the <code>TestAdapter</code> class. Also, keep in mind that your report class, as well as any classes it depends on, must be in your class path when you run Detroubulator.</p>
+			
+			<h3>Writing to the console</h3>
+			<p>When multiple reports are writing to the console, the display can quickly become hard to read. In order to avoid clutter, use the so-called <em>labeled sections</em> when you're writing to the console. Here's how:</p>
+			<pre>
+Console.startSection(&quot;MyLabel&quot;);
+Console.p(&quot;Here's one line of output&quot;);
+Console.endSection();
+
+Console.startSection(&quot;MyOtherLabel&quot;);
+Console.p(&quot;Here's another line of output&quot;);
+Console.endSection();
+			</pre>
+			<p>The above code writes the following text to the console:</p>
+			<p><img src="images/labeled_section.png"></p>
+			<p>The two sections are clearly delineated and the labels make it easy to determine the origin of each line of output.</p>
+
+		</div>
+
+	</body>
+</html>

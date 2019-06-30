@@ -1,0 +1,359 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - Test file tour</title>
+		<link rel="stylesheet" type="text/css" href="styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - Test file tour</h1>		
+			<p>Understanding the Detroubulator test file is vital to mastering the tool. Luckily, it's not terribly complicated. This document walks you through each element in the test file. While reading, keep the <a href="sample/sample_test.xml">sample test file</a> handy for reference.  You might also want to take a look at <a href="misc/testfile_schema.xsd"><code>testfile_schema.xsd</code></a>, the test file XML Schema, which can be found in the <code>docs/misc</code> directory.</p>
+			
+			<h2>A note about configuration</h2>
+			<p>The <code>&lt;configuration&gt;</code> element is used throughout the test file to add configuration data. It contains zero or more <code>&lt;parameter&gt;</code> elements that each represents a single configuration parameter. Here's an example of a <code>&lt;configuration&gt;</code> element that holds the configuration of an XML output report:</p>
+			<pre>
+&lt;reporting&gt;
+    &lt;testreport type=&quot;xml&quot;&gt;
+        &lt;configuration&gt;
+            &lt;parameter name=&quot;file&quot;&gt;sample_report.xml&lt;/parameter&gt;
+            &lt;parameter name=&quot;dumpdir&quot;&gt;dumped_output&lt;/parameter&gt;
+        &lt;/configuration&gt;
+    &lt;/testreport&gt;
+&lt;/reporting&gt;
+			</pre>
+			
+			<h2><code>&lt;testsuite&gt;</code></h2>
+			<p>This element is the root element of the test file XML document. It has the following child elements:</p>
+			
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Child element</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><code>&lt;server&gt;</code></td>
+					<td>Yes</td>
+					<td>Contains information about the XI server.</td>
+				</tr>
+				<tr>
+					<td><code>&lt;program&gt;</code></td>
+					<td>Yes</td>
+					<td>Contains the details of the mapping program under test.</td>
+				</tr>
+				<tr>
+					<td><code>&lt;transformationparams&gt;</code></td>
+					<td>No</td>
+					<td>Contains parameters that will be sent to the mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>&lt;reporting&gt;</code></td>
+					<td>Yes</td>
+					<td>Contains the details of how to display test results.</td>
+	
+				</tr>
+				<tr>
+					<td><code>&lt;namespacecontext&gt;</code></td>
+					<td>No</td>
+					<td>Binds prefixes to namespace URIs.</td>
+				</tr>
+				<tr>
+					<td><code>&lt;tests&gt;</code></td>
+					<td>Yes</td>
+					<td>Contains the test cases to be executed.</td>
+	
+				</tr>
+			</table>
+			<p>Detailed information about each element can be found in the following sections.</p>		
+	
+			<h2><code>&lt;server&gt;</code></h2>
+			<p>The <code>&lt;server&gt;</code> element holds the details of the XI server that hosts the mapping program under test. It contains a single <code>&lt;configuration&gt;</code> element. The following parameters are allowed:</p>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Parameter</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><code>host</code></td>
+					<td>Yes</td>
+					<td>The XI server's host name.</td>
+				</tr>
+				<tr>
+					<td><code>gateway</code></td>
+					<td>Yes</td>
+					<td>The gateway's port number (related <a href="FAQ.html#sapxi_6">FAQ entry</a>).</td>
+				</tr>
+				<tr>
+					<td><code>client</code></td>
+					<td>Yes</td>
+					<td>The client to connect to.</td>
+				</tr>
+				<tr>
+					<td><code>user</code></td>
+					<td>Yes</td>
+					<td>The login user name.</td>
+				</tr>
+				<tr>
+					<td><code>password</code></td>
+					<td>No</td>
+					<td>The login password.</td>
+				</tr>
+				<tr>
+					<td><code>sysnum</code></td>
+					<td>Yes</td>
+					<td>The system number of the XI server.</td>
+				</tr>
+				<tr>
+					<td><code>progid</code></td>
+					<td>Yes</td>
+					<td>The program ID used by the JCo connection (related <a href="FAQ.html#sapxi_4">FAQ entry</a>).</td>
+				</tr>
+				<tr>
+					<td><code>loglevel</code></td>
+					<td>No</td>
+					<td>Sets the level of trace information to record. The value must be a whole number between 0 (logging deactivated) and 3 (log everything). If the parameter is omitted, a default value of 3 will be used.</td>
+				</tr>
+			</table>
+			<p>Please note that if the password is omitted from the test file, the user will be prompted for it at runtime.</p>
+			
+			<h2><code>&lt;program&gt;</code></h2>
+			<p>The <code>&lt;program&gt;</code> element contains the information that's required to locate the mapping program under test. The <code>type</code> attribute indicates the kind of mapping program to be executed. The following attribute values are supported:</p>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Value</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><code>message</code></td>
+					<td>Indicates a message mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>java</code></td>
+					<td>Indicates a Java mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>xslt</code></td>
+					<td>Indicates an XSLT mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>abap</code></td>
+					<td>Indicates an ABAP mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>abapxslt</code></td>
+					<td>Indicates an ABAP XSLT mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>intf</code></td>
+					<td>Indicates an interface mapping.</td>
+				</tr>
+			</table>
+			<p>The contents of the <code>&lt;program&gt;</code> element is a single <code>&lt;configuration&gt;</code> element. All mapping programs <em>except</em> ABAP and ABAP XSLT (please see below) require the following parameters:</p></p>
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Parameter</th>
+					<th>Mandatory</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><code>name</code></td>
+					<td>Yes</td>
+					<td>The name of the mapping program. For futher details, please see below.</td>
+				</tr>
+				<tr>
+					<td><code>ns</code></td>
+					<td>Yes</td>
+					<td>The namespace that contains the mapping program.</td>
+				</tr>
+				<tr>
+					<td><code>swcv.id</code></td>
+					<td>Yes</td>
+					<td>The object ID of the Software Component Version that contains the mapping program (related <a href="FAQ.html#sapxi_3">FAQ entry</a>).</td>
+				</tr>
+			</table>
+			<p>If the mapping program is a message mapping, the <code>name</code> parameter must be set to the name of the mapping object. If it's a Java mapping program, the <code>name</code> parameter must be set to the fully qualified name of the Java class, i.e. <code>com.example.package.MappingClass</code>. If the mapping program is an XSLT stylesheet, the <code>name</code> parameter must be set to the name of the stylesheet file including its path inside the Imported Archive (if any), i.e. <code>path/to/stylesheet.xsl</code>.</p>
+			<p>Configuring ABAP and ABAP XSLT mapping programs requires only a single parameter: <code>name</code>. For ABAP mapping programs, the <code>name</code> parameter must be set to the name of the mapping class, i.e. <code>Z_MY_ABAP_MAPPING</code>. For ABAP XSLT mapping programs, the <code>name</code> parameter must be set to the name of the transformation to execute, i.e. <code>Z_MY_XSLT_TRANSFORMATION</code>.</p>
+			<p>Please note that in order to test ABAP mapping programs, ABAP XSLT mapping programs and interface mappings, you need to install two Detroubulator function modules on your XI system. For more information, please refer to <a href="FAQ.html#installrun_9">&quot;How do I install the Detroubulator function modules?&quot;</a> in the FAQ.</p>
+
+			<h2><code>&lt;transformationparams&gt;</code></h2>
+			<p>The <code>&lt;transformationparams&gt;</code> element holds any transformation parameters (message ID, sender service, receiver interface etc.) that you want to pass to the remote mapping program. Here's an example:</p>
+			<pre>
+&lt;transformationparams&gt;
+    &lt;parameter name=&quot;MESSAGE_ID&quot;&gt;4fc43701f6e53e3eb5ef4748631adffb&lt;/parameter&gt;
+&lt;/transformationparams&gt;
+			</pre>
+		<p>The allowed parameter names are the constants declared in the <code>com.sap.aii.mapping.api.StreamTransformationConstants</code> interface. For a complete list of these constants, please refer to the <a href="https://help.sap.com/javadocs/NW04S/current/pi/com/sap/aii/mapping/api/StreamTransformationConstants.html">Javadoc documentation</a> of the <code>StreamTransformationConstants</code> interface.</p>
+			
+			<h2><code>&lt;reporting&gt;</code></h2>
+			<p>This element contains information about how the test results should be handled, i.e. whether the results should be displayed on the screen, written to a file etc. For detailed information about the available reports and how to write your own, please refer to the <a href="Reports.html">&quot;Reports&quot;</a> document.</p>
+			
+			<h2><code>&lt;namespacecontext&gt;</code></h2>
+			<p>If the mapping output contains one or more XML namespaces, you need to explicitly bind a prefix to each namespace URI in the <code>&lt;namespacecontext&gt;</code> element; otherwise, you will not be able to correctly reference elements that belong to a namespace. Here's an example:</p>
+			
+			<pre>
+&lt;namespacecontext&gt;
+    &lt;namespace&gt;
+        &lt;prefix&gt;ns&lt;/prefix&gt;
+        &lt;uri&gt;http://example.com/namespace/URI&lt;/uri&gt;
+    &lt;/namespace&gt;
+&lt;/namespacecontext&gt;
+			</pre>
+			
+			<p>In this example, the prefix <code>ns</code> is bound to the URI <code>http://example.com/namespace/URI</code>. This prefix must be used when referring to elements belonging to that particular namespace. Please note that the prefix you choose doesn't necessarily have to match the prefix bound to the same namespace URI in the mapping program's output. Also note that if the mapping output contains a default namespace, a prefix of your choice must still be bound to the default namespace URI in the <code>&lt;namespacecontext&gt;</code> element. More details on handling namespaces can be found in the <a href="Namespaces.html">&quot;Handling XML namespaces&quot;</a> document.</p>
+			
+			<p>If the mapping output does not contain any namespaces, the <code>&lt;namespacecontext&gt;</code> element can be left out. If present, though, the <code>&lt;namespacecontext&gt;</code> element must contain at least one <code>&lt;namespace&gt;</code> element.</p>
+			
+			<h2><code>&lt;tests&gt;</code></h2>
+			<p>The <code>&lt;tests&gt;</code> element holds the test cases to be executed. Specifically, it has a <code>&lt;testcase&gt;</code> child element for each test case. The <code>&lt;tests&gt;</code> element can also contain shared assertions in the <code>&lt;shared&gt;</code> element. Shared assertions are named groups of assertions that can be referenced from multiple test cases. Here's an example of a <code>&lt;tests&gt;</code> element:</p>
+			<pre>
+&lt;tests&gt;
+    &lt;shared&gt;
+        &lt;assertiongroup name="validate"&gt;
+            &lt;validate schema="\path\to\schema.xsd" type="xsd"&gt;Mapping output is invalid&lt;/validate&gt;
+        &lt;/assertiongroup&gt;
+        &lt;assertiongroup name="business_rules"&gt;
+            &lt;content xpath=&quot;count(/some/element/or/other) mod 2&quot; expect=&quot;0&quot;&gt;Number of /some/element/or/other elements must be even&lt;/content&gt;
+        &lt;/assertiongroup&gt;
+    &lt;/shared&gt;
+    &lt;testcase&gt;
+        &lt;inputdocument&gt;sample_input1.xml&lt;/inputdocument&gt;
+        &lt;assertions include="validate business_rules"&gt;
+            &lt;content xpath="count(/some/element)" expect="1"/&gt;
+        &lt;/assertions&gt;
+    &lt;/testcase&gt;
+    &lt;testcase&gt;
+        &lt;inputdocument&gt;sample_input2.xml&lt;/inputdocument&gt;
+        &lt;assertions include="validate business_rules"&gt;
+            &lt;content xpath="count(/some/element)" expect="2"/&gt;
+        &lt;/assertions&gt;
+    &lt;/testcase&gt;
+    &lt;testcase&gt;
+        &lt;inputdocument&gt;sample_input3.xml&lt;/inputdocument&gt;
+        &lt;assertions&gt;
+            &lt;exception&gt;Expected the mapping to fail&lt;/exception&gt;
+        &lt;/assertions&gt;
+    &lt;/testcase&gt;
+&lt;/tests&gt;
+			</pre>
+		<p>In this example, the <code>&lt;tests&gt;</code> element contains three test cases. The <code>&lt;shared&gt;</code> element contains two assertion groups, both of which are referenced from the first two test cases. The <code>&lt;shared&gt;</code> element is explained in more detail below.</p>
+
+			<h2><code>&lt;shared&gt;</code></h2>
+		<p>The <code>&lt;shared&gt;</code> element contains one or more named groups of assertions, each placed in an <code>&lt;assertiongroup&gt;</code> element, that can be referenced from multiple test cases. The <code>name</code> attribute of the <code>&lt;assertiongroup&gt;</code> element holds the group's name. Shared assertions are useful in cases where the same assertions occur in several test cases. Rather than copying the assertions between test cases, create an assertion group and reference it from the test cases. Each group must contain at least one assertion. For an overview of supported assertions, please refer to the description of the <code>&lt;testcase&gt;</code> element below.</p>
+
+			<h2><code>&lt;testcase&gt;</code></h2>
+			<p>The <code>&lt;inputdocument&gt;</code> element holds the path to the input document that will be passed to the remote mapping program. The <code>&lt;assertions&gt;</code> element holds our assertions about the mapping program's output. A <code>&lt;transformationparams&gt;</code> element can optionally be provided on the test case level, specifically between the <code>&lt;inputdocument&gt;</code> element and the <code>&lt;assertions&gt;</code> element. Transformation parameters set on the test case level override transformation parameters set on the test file level.</p>
+
+			<h2><code>&lt;assertions&gt;</code></h2>
+			<p> The <code>&lt;assertions&gt;</code> element holds our assertions about the mapping program's output. Detroubulator $version$ supports the following assertions:</p>
+	
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Assertion</th>
+					<th>Element</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>Content assertion</td>
+					<td><code>&lt;content&gt;</code></td>
+					<td>Asserts a fact about the contents of the mapping output.</td>
+				</tr>
+				<tr>
+					<td>Exception assertion</td>
+					<td><code>&lt;exception&gt;</code></td>
+					<td>Asserts that the mapping program will fail.</td>
+				</tr>
+				<tr>
+					<td>Validation assertion</td>
+					<td><code>&lt;validate&gt;</code></td>
+					<td>Asserts that the mapping output is valid according to a specified schema.</td>
+				</tr>
+				<tr>
+					<td>External assertion</td>
+					<td><code>&lt;external&gt;</code></td>
+					<td>An assertion implemented in an external Java class.</td>
+				</tr>
+			</table>
+
+			<p>The assertion elements will be explained in more detail below. The &lt;assertions&gt; element can optionally include shared assertion groups using the <code>include</code> attribute. The <code>include</code> attribute must contain one or more assertion group names, separated by whitespace. Each test case must contain at least one assertion.</p>
+
+			<h2><code>&lt;content&gt;</code></h2>
+			<p>The content assertion examines the mapping program's output, specifically by evaluating an XPath expression. Here's an example:</p>
+			
+			<pre>
+&lt;content xpath="count(/some/element)" expect="1"/&gt;
+			</pre>
+			
+			<p>In this example, we're asserting that a particular element occurs exactly once in the mapping program's output. The <code>xpath</code> attribute contains the XPath expression. The <code>expect</code> attribute contains the value, that we expect the XPath expression to evaluate to. Of the three XPath data types (number, string and boolean), the values are assumed to be strings. You can, however, explicitly specify the data type as follows:</p>
+		
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Data type</th>
+					<th>Example</th>
+				</tr>
+				<tr>
+					<td>String</td>
+					<td><code>string:testing</code></td>
+				</tr>
+				<tr>
+					<td>Number</td>
+					<td><code>num:3.142</code></td>
+				</tr>
+				<tr>
+					<td>Boolean</td>
+					<td><code>bool:true</code></td>
+				</tr>
+			</table>
+
+			<p>The <code>expect</code> attribute is optional. If it is not present, Detroubulator will assume a default value of Boolean true. This ensures that Detroubulator 1.0 test files will run unchanged in version 1.1. The <code>&lt;content&gt;</code> element can either be empty or contain an error message. If no error message is provided, Detroubulator will generate an appropriate message. If an expected value is provided, the generated error message will contain both the expected and the actual value, which can be useful when troubleshooting.</p>
+
+			<h2><code>&lt;exception&gt;</code></h2>
+			<p>The exception assertion is used when you expect the mapping program to fail. Here's an example:</p>
+			
+			<pre>
+&lt;exception&gt;Expected an error&lt;/exception&gt;
+			</pre>
+			
+			<p>If the mapping program throws an exception, the exception assertion passes. If it does not, the exception assertion fails. The <code>&lt;exception&gt;</code> element can either be empty or contain an error message. If no error message is provided, Detroubulator will generate an appropriate message.</p>
+
+			<h2><code>&lt;validate&gt;</code></h2>
+			<p>The validation assertion validates the mapping program's output against a schema. If the output is valid, the validation assertion passes. If it is not, the validation assertion fails. Here's an example:</p>
+			
+			<pre>
+&lt;validate schema="\path\to\my_schema.xsd" type="xsd"&gt;Result is not valid&lt;/validate&gt;
+			</pre>
+			
+			<p>The <code>type</code> attribute contains the type of schema. At the moment, only XML Schema (<code>type=&quot;xsd&quot;</code>) is supported. The <code>schema</code> attribute contains the path to the schema file. If the validation fails, the validation error message will be written to the log if Detroubulator is in debug mode. The <code>&lt;validate&gt;</code> element can either be empty or contain an error message. If no error message is provided, Detroubulator will generate an appropriate message.</p>
+
+			<h2><code>&lt;external&gt;</code></h2>
+			<p>An external assertion is a Java class that implements the <code>org.detroubulator.core.Assertion</code> interface. This lets you write assertions that can examine the mapping program's output down to the byte level. This is useful in two cases:</p>
+			
+			<ul>
+				<li>When you need to examine the mapping program's output in more detail than is possible with XPath</li>
+				<li>When the mapping program's output is not XML</li>
+			</ul>
+
+			<p>Here's an example of an external assertion:</p>
+			
+			<pre>
+&lt;external class=&quot;my.package.MyExternalAssertionClass&quot;/>
+			</pre>
+			
+			<p>The <code>class</code> attribute contains the fully qualified class name of the Java class. Please note that the class must be in your class path; otherwise Detroubulator will not be able to load it. Also note that the class must have a no-arg constructor. It is possible to configure the external assertion from within the test file. In order to do so, the class must implement the <code>org.detroubulator.util.Configurable</code> interface. Here's an example:</p>
+
+			<pre>
+&lt;external class=&quot;my.package.MyExternalAssertionClass&quot;>
+    &lt;configuration&gt;
+        &lt;parameter name=&quot;my_param&quot;&gt;Value goes here&lt;/parameter&gt;
+    &lt;/configuration&gt;
+&lt;external&gt;
+			</pre>
+			
+			<p>Please note that the <code>&lt;external&gt;</code> element <em>cannot</em> contain an error message. If you need to set the error message at runtime, you must do so by storing the message in a configuration parameter as described above.</p>
+			
+		</div>
+
+	</body>
+</html>

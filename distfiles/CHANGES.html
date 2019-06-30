@@ -1,0 +1,42 @@
+﻿<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - CHANGES</title>
+		<link rel="stylesheet" type="text/css" href="docs/styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - CHANGES</h1>
+			<p>This document contains an overview of the new features introduced with each new release of Detroubulator. For more in-depth information, please refer to the <a href="docs/index.html">documentation library</a>.</p>
+	
+			<h2>Version 1.1</h2>
+
+			<h3>New assertions</h3>
+			<p>Two new assertions have been introduced. The validation assertion validates the mapping program's output against a schema. If the output is valid, the validation assertion passes. If it is not, the validation assertion fails. The external assertion is a Java class that implements the <code>org.detroubulator.core.Assertion</code> interface. This lets you write assertions that can examine the mapping program's output down to the byte level. This is useful in two cases:</p>
+			
+			<ul>
+				<li>When you need to examine the mapping program's output in more detail than is possible with XPath</li>
+				<li>When the mapping program's output is not XML</li>
+			</ul></p>
+			
+			<h3>Support for all XI mapping programs</h3>
+			<p>Detroubulator 1.0 shipped with support for Java, XSLT and message mapping programs. Version 1.1 introduces support for ABAP mapping programs, ABAP XSLT mapping programs and interface mappings.</p>
+			
+			<h3>Shared assertions</h3>
+			<p>Shared assertions are named groups of assertions that can be referenced from multiple test cases. Shared assertions are useful in cases where the same assertions occur in several test cases. Rather than copying the assertions between test cases, create an assertion group and reference it from the test cases.</p>
+			
+			<h3>Expected values in content assertions</h3>
+			<p>In Detroubulator version 1.0, the content assertion contained an XPath expression, which was expected to evaluate to Boolean true. The version 1.1 content assertions lets you explicitly specify the expected value in the new <code>expect</code> attribute. This makes for much improved error messages when the expected and the actual value are different.</p>
+			
+			<h3>Miscellaneous</h3>
+			<ol>
+				<li>Detroubulator is now a 100% command line utility</li>
+				<li>The design of the HTML output report has been updated and no longer requires images loaded from the Detroubulator website</li>
+			</ol>
+
+		</div>
+
+	</body>
+</html>

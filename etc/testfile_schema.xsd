@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="testsuite">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="server" type="configurationType"/>
+				<xs:element name="program" type="programType"/>
+				<xs:element name="transformationparams" type="tparamsType" minOccurs="0"/>
+				<xs:element name="reporting" type="reportingType"/>
+				<xs:element name="namespacecontext" type="nscontextType" minOccurs="0"/>
+				<xs:element name="tests" type="testsType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="reportingType">
+		<xs:sequence>
+			<xs:element name="testreport" type="testReportType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="testReportType">
+		<xs:complexContent>
+			<xs:extension base="configurationType">
+				<xs:attribute name="type" type="reportTypeType" use="optional"/>
+				<xs:attribute name="class" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="programType">
+		<xs:complexContent>
+			<xs:extension base="configurationType">
+				<xs:attribute name="type" type="mappingProgramTypeType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="nscontextType">
+		<xs:sequence>
+			<xs:element name="namespace" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="prefix" type="xs:string"/>
+						<xs:element name="uri" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="testsType">
+		<xs:sequence>
+			<xs:element name="shared" type="sharedType" minOccurs="0"/>
+			<xs:element name="testcase" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="inputdocument" type="xs:string"/>
+						<xs:element name="transformationparams" type="tparamsType" minOccurs="0"/>
+						<xs:element name="assertions" type="assertionsType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="tparamsType">
+		<xs:sequence>
+			<xs:element name="parameter" type="parameterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="configurationType">
+		<xs:sequence>
+			<xs:element name="configuration">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="parameter" type="parameterType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="mappingProgramTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="message"/>
+			<xs:enumeration value="xslt"/>
+			<xs:enumeration value="java"/>
+			<xs:enumeration value="abap"/>
+			<xs:enumeration value="abapxslt"/>
+			<xs:enumeration value="intf"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="reportTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="console"/>
+			<xs:enumeration value="xml"/>
+			<xs:enumeration value="html"/>
+			<xs:enumeration value="audio"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="assertionsType">
+		<xs:complexContent>
+			<xs:extension base="assertionListType">
+				<xs:attribute name="include" type="assertionGroupIncludeType" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="assertionGroupIncludeType">
+		<xs:list itemType="assertionGroupNameType"/>
+	</xs:simpleType>
+
+	<!-- The following types will be moved to an externel schema later, since they will be shared between the test file schema and the assertion include schema. -->
+
+	<xs:complexType name="assertionListType">
+		<xs:choice minOccurs="0">
+			<xs:element name="exception" type="xs:string"/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="content" type="contentType"/>
+				<xs:element name="external" type="externalType"/>
+				<xs:element name="validate" type="validateType"/>
+			</xs:choice>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="sharedType">
+		<xs:sequence>
+			<xs:element name="assertiongroup" type="assertionGroupType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="assertionGroupType">
+		<xs:complexContent>
+			<xs:extension base="assertionListType">
+				<xs:attribute name="name" type="assertionGroupNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="assertionGroupNameType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[_a-zA-Z0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="schemaTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="xsd"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="contentType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="xpath" use="required"/>
+				<xs:attribute name="expect" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="externalType">
+		<xs:complexContent>
+			<xs:extension base="optionalConfigurationType">
+				<xs:attribute name="class" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="validateType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="schema" use="required"/>
+				<xs:attribute name="type" type="schemaTypeType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="optionalConfigurationType">
+		<xs:sequence>
+			<xs:element name="configuration" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="parameter" type="parameterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="parameterType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+</xs:schema>

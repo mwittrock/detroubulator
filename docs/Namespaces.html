@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - Handling XML namespaces</title>
+		<link rel="stylesheet" type="text/css" href="styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - Handling XML namespaces</h1>
+			<p>This document demonstrates how to handle XML namespaces in the output created by the mapping program under test.</p>
+			
+			<h2>What's the problem?</h2>
+			<p>Consider the following (grossly simplified) order document:</p>
+			<pre>
+&lt;Order xmlns:li=&quot;http://example.com/lineitems&quot;&gt;
+    &lt;Header&gt;
+        &lt;OrderNumber&gt;12345678&lt;/OrderNumber&gt;
+        &lt;OrderDate&gt;2006-09-28&lt;/OrderDate&gt;
+    &lt;/Header&gt;
+    &lt;Details&gt;
+        &lt;li:LineItem&gt;
+            &lt;li:LineNumber&gt;1&lt;/li:LineNumber&gt;
+            &lt;li:ItemSKU&gt;abc-123&lt;/li:ItemSKU&gt;
+            &lt;li:Quantity&gt;10&lt;/li:Quantity&gt;
+            &lt;li:UnitPrice&gt;19.95&lt;/li:UnitPrice&gt;
+            &lt;li:Currency&gt;USD&lt;/li:Currency&gt;
+        &lt;/li:LineItem&gt;
+        &lt;li:LineItem&gt;
+            &lt;li:LineNumber&gt;2&lt;/li:LineNumber&gt;
+            &lt;li:ItemSKU&gt;def-456&lt;/li:ItemSKU&gt;
+            &lt;li:Quantity&gt;1&lt;/li:Quantity&gt;
+            &lt;li:UnitPrice&gt;1.74&lt;/li:UnitPrice&gt;
+            &lt;li:Currency&gt;USD&lt;/li:Currency&gt;
+        &lt;/li:LineItem&gt;
+    &lt;/Details&gt;
+&lt;/Order&gt;
+			</pre>
+			<p>Suppose that we want to assert that the number of line items in the order document is two. Here's a first shot at a content assertion:</p>
+			<pre>
+&lt;content xpath=&quot;count(/Order/Details/LineItem)&quot; expect=&quot;2&quot;/&gt;
+			</pre>
+		<p>This assertion will always fail, though. Why is that? In XPath 1.0, which is the version used in Detroubulator, elements with no prefix in a location path match elements that don't belong to a namespace. In the example document, the <code>&lt;Order&gt;</code> and <code>&lt;Details&gt;</code> elements don't belong to a namespace. The <code>&lt;LineItem&gt;</code> element and its children, however, belong to the namespace with the URI <code>http://example.com/lineitems</code>. In order for the content assertion to work as expected, a prefix must be bound to the URI and this prefix must then be used in the location path. The following section demonstrates how to accomplish this.</p>
+	
+			<h2>Using the <code>&lt;namespacecontext&gt;</code> element</h2>
+			<p>The <code>&lt;namespacecontext&gt;</code> element lets you bind prefixes to namespace URIs. Here's how to bind the prefix <code>pf</code> to the URI used in the order document:</p>
+			<pre>
+&lt;namespacecontext&gt;
+    &lt;namespace&gt;
+        &lt;prefix&gt;pf&lt;/prefix&gt;
+        &lt;uri&gt;http://example.com/lineitems&lt;/uri&gt;
+    &lt;/namespace&gt;
+&lt;/namespacecontext&gt;
+			</pre>
+			<p>When the prefix has been bound to the namespace URI, we can use it in the content assertion:</p>
+			<pre>
+&lt;content xpath=&quot;count(/Order/Details/pf:LineItem)&quot; expect=&quot;2&quot;/&gt;
+			</pre>
+			<p>Since <code>pf:LineItem</code> correctly matches <code>&lt;LineItem&gt;</code> elements belonging to the line items namespace, this content assertion works as expected.</p>
+	
+			<h2>The default namespace</h2>
+			<p>Consider the following slight rewrite of the order document:</p>
+			<pre>
+&lt;Order xmlns=&quot;http://example.com/orders&quot;&gt;
+    &lt;Header&gt;
+        &lt;OrderNumber&gt;12345678&lt;/OrderNumber&gt;
+        &lt;OrderDate&gt;2006-09-28&lt;/OrderDate&gt;
+    &lt;/Header&gt;
+    &lt;Details&gt;
+        &lt;LineItem&gt;
+            &lt;LineNumber&gt;1&lt;/LineNumber&gt;
+            &lt;ItemSKU&gt;abc-123&lt;/ItemSKU&gt;
+            &lt;Quantity&gt;10&lt;/Quantity&gt;
+            &lt;UnitPrice&gt;19.95&lt;/UnitPrice&gt;
+            &lt;Currency&gt;USD&lt;/Currency&gt;
+        &lt;/LineItem&gt;
+        &lt;LineItem&gt;
+            &lt;LineNumber&gt;2&lt;/LineNumber&gt;
+            &lt;ItemSKU&gt;def-456&lt;/ItemSKU&gt;
+            &lt;Quantity&gt;1&lt;/Quantity&gt;
+            &lt;UnitPrice&gt;1.74&lt;/UnitPrice&gt;
+            &lt;Currency&gt;USD&lt;/Currency&gt;
+        &lt;/LineItem&gt;
+    &lt;/Details&gt;
+&lt;/Order&gt;
+			</pre>
+		<p>The namespace with the URI <code>http://example.com/orders</code> is now the default namespace of every element in the document. This means that even though the elements have no prefix, they still belong to this namespace. That the elements are unprefixed might lead you to believe, that we don't need prefixes in the content assertion's XPath expression either. This is not the case, however. In order to write a location path that matches elements belonging to the default namespace, we first need to bind a prefix to the default namespace URI:</p>
+			<pre>
+&lt;namespacecontext&gt;
+    &lt;namespace&gt;
+        &lt;prefix&gt;d&lt;/prefix&gt;
+        &lt;uri&gt;http://example.com/orders&lt;/uri&gt;
+    &lt;/namespace&gt;
+&lt;/namespacecontext&gt;
+			</pre>
+			<p>Having done that, here's how to assert that the number of line items in the order document is two:</p>
+			<pre>
+&lt;content xpath=&quot;count(/d:Order/d:Details/d:LineItem)&quot; expect=&quot;2&quot;/&gt;
+			</pre>
+			<p>In other words, the default namespace must be treated like any other namespace when writing content assertions.</p>
+
+		</div>
+
+	</body>
+</html>

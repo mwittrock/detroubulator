@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-16"?>
+<FUGR SPRAS="E" AREA="ZXI_DTRB" AREAT="Detroubulator">
+ <mainprogram NAME="SAPLZXI_DTRB" VARCL="X" DBAPL="S" DBNA="D$" SUBC="F" APPL="S" CNAM="UDV" CDAT="20070426" UNAM="UDV" UDAT="20070426" VERN="000002" RMAND="100" RLOAD="E" FIXPT="X" SDATE="20070928" STIME="112855" IDATE="20070426" ITIME="221958" LDBNAME="D$S" UCCHECK="X">
+  <textPool/>
+  <source>*******************************************************************
+*   System-defined Include-files.                                 *
+*******************************************************************
+  INCLUDE LZXI_DTRBTOP.                      &quot; Global Data
+  INCLUDE LZXI_DTRBUXX.                      &quot; Function Modules
+
+*******************************************************************
+*   User-defined Include-files (if necessary).                    *
+*******************************************************************
+* INCLUDE LZXI_DTRBF...                      &quot; Subprograms
+* INCLUDE LZXI_DTRBO...                      &quot; PBO-Modules
+* INCLUDE LZXI_DTRBI...                      &quot; PAI-Modules</source>
+ </mainprogram>
+ <includeprograms>
+  <include NAME="LZXI_DTRBTOP" DBAPL="S" DBNA="D$" SUBC="I" APPL="S" CNAM="UDV" CDAT="20070426" UNAM="UDV" UDAT="20070426" VERN="000002" RMAND="100" FIXPT="X" SDATE="20070426" STIME="221959" IDATE="20070426" ITIME="221959" LDBNAME="D$S" UCCHECK="X">
+   <include_source>FUNCTION-POOL ZXI_DTRB.                     &quot;MESSAGE-ID ..</include_source>
+  </include>
+ </includeprograms>
+ <functionmodules>
+  <functionmodule NAME="Z_XI_DTRB_MAPPING_EXECUTE" REMOTE="R" STEXT="Detroubulator: Execute ABAP or ABAP XSLT mapping">
+   <importing PARAMETER="SOURCE" TYP="XSTRING"/>
+   <importing PARAMETER="MAPTYPE" TYP="MPP_MAPTYPE"/>
+   <importing PARAMETER="PROG" TYP="STRING"/>
+   <importing PARAMETER="NAMESPACE" OPTIONAL="X" TYP="STRING"/>
+   <importing PARAMETER="SWCV" OPTIONAL="X" TYP="STRING"/>
+   <importing PARAMETER="PARAMS" OPTIONAL="X" TYP="MPP_PARAM_TAB"/>
+   <importing PARAMETER="LOGLEVEL" OPTIONAL="X" TYP="MP3_LOGLEVEL"/>
+   <exporting PARAMETER="RESULT" TYP="XSTRING"/>
+   <exporting PARAMETER="MAPPING_RETURN" TYP="MP3_MSG"/>
+   <documentation PARAMETER="SOURCE" KIND="P" STEXT="Source Document" INDEX=" 001"/>
+   <documentation PARAMETER="MAPTYPE" KIND="P" STEXT="Mapping Type" INDEX=" 002"/>
+   <documentation PARAMETER="PROG" KIND="P" STEXT="Mapping Name" INDEX=" 003"/>
+   <documentation PARAMETER="NAMESPACE" KIND="P" STEXT="Namespace" INDEX=" 004"/>
+   <documentation PARAMETER="SWCV" KIND="P" STEXT="Software Component Version ID" INDEX=" 005"/>
+   <documentation PARAMETER="PARAMS" KIND="P" STEXT="Table of Mapping Parameters" INDEX=" 006"/>
+   <documentation PARAMETER="LOGLEVEL" KIND="P" STEXT="Log Level" INDEX=" 007"/>
+   <documentation PARAMETER="RESULT" KIND="P" STEXT="Target Document" INDEX=" 008"/>
+   <documentation PARAMETER="MAPPING_RETURN" KIND="P" STEXT="Error Message Data" INDEX=" 009"/>
+   <fm_source_new>*******************************************************************************
+* Copyright 2007 AppliCon A/S
+*
+* This file is part of Detroubulator.
+*
+* Detroubulator is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* Detroubulator is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Detroubulator; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*
+*******************************************************************************
+
+
+
+  DATA: li_mapping       TYPE REF TO if_mapping,
+        lc_param         TYPE REF TO cl_mapping_param,
+        li_trace         TYPE REF TO cl_mapping_trace,
+        lx_root          TYPE REF TO cx_root,
+        lx_xerr          TYPE REF TO cx_transformation_error,
+        lv_pname         TYPE syrepid,
+        lv_iname         TYPE syrepid,
+        lv_srcli         TYPE i,
+        ls_param         TYPE LINE OF mpp_param_tab.
+
+* Mapping parameters
+  CREATE OBJECT lc_param
+    EXPORTING
+      params = params.
+
+* Initialize return value
+  CLEAR mapping_return.
+  mapping_return-monid = &apos;OK&apos;.
+
+  CASE maptype.
+    WHEN &apos;R3_ABAP&apos;.
+*     Instantiate mapping object and execute
+      CREATE OBJECT li_mapping TYPE (prog).
+
+      TRY.
+          CALL METHOD li_mapping-&gt;execute
+            EXPORTING
+              SOURCE = SOURCE
+              param  = lc_param
+              trace  = li_trace
+            IMPORTING
+              RESULT = RESULT.
+        CATCH cx_root INTO lx_root.
+          mapping_return-monid = &apos;MAPPING_ERROR&apos;.
+          mapping_return-msgty = &apos;E&apos;.
+          mapping_return-msgv1 = lx_root-&gt;if_message~get_text( ).
+          CALL METHOD lx_root-&gt;get_source_position
+            IMPORTING
+              program_name = lv_pname
+              include_name = lv_iname
+              source_line  = lv_srcli.
+          mapping_return-msgv2 = lv_pname.
+          mapping_return-msgv3 = lv_iname.
+          mapping_return-msgv4 = lv_srcli.
+          EXIT.
+      ENDTRY.
+
+    WHEN &apos;R3_XSLT&apos;.
+      TRY.
+          DATA:
+            l_param TYPE mpp_param,
+            l_parms TYPE abap_trans_parmbind_tab,
+            wa_parm TYPE abap_trans_parmbind.
+
+*       Move parameters to correct format for tranformation
+          LOOP AT params INTO l_param.
+            MOVE-CORRESPONDING l_param TO wa_parm.
+            APPEND wa_parm TO l_parms.
+          ENDLOOP.
+
+          CALL TRANSFORMATION (prog)
+            PARAMETERS (l_parms)
+            SOURCE XML source
+            RESULT XML result.
+        CATCH cx_transformation_error INTO lx_xerr.
+          mapping_return-monid = &apos;MAPPING_ERROR&apos;.
+          mapping_return-msgty = &apos;E&apos;.
+          mapping_return-msgv1 = lx_xerr-&gt;if_message~get_text( ).
+      ENDTRY.
+
+    WHEN OTHERS.
+      mapping_return-monid = &apos;UNKNOWN_MAPPING_TYPE&apos;.
+      mapping_return-msgty = &apos;E&apos;.
+      mapping_return-msgv1 = maptype.
+  ENDCASE.</fm_source_new>
+  </functionmodule>
+  <functionmodule NAME="Z_XI_DTRB_MAPPING_GET_STEPS" REMOTE="R" STEXT="Detroubulator: Get mapping steps for interface mapping">
+   <importing PARAMETER="PROG" TYP="STRING"/>
+   <importing PARAMETER="NAMESPACE" TYP="STRING"/>
+   <importing PARAMETER="SWCV" TYP="STRING"/>
+   <exporting PARAMETER="STEPS" TYP="MPP_SMPPMAP3"/>
+   <documentation PARAMETER="PROG" KIND="P" STEXT="Mapping Name" INDEX=" 001"/>
+   <documentation PARAMETER="NAMESPACE" KIND="P" STEXT="Namespace" INDEX=" 002"/>
+   <documentation PARAMETER="SWCV" KIND="P" STEXT="Software Component Version ID" INDEX=" 003"/>
+   <documentation PARAMETER="STEPS" KIND="P" STEXT="Mapping steps" INDEX=" 004"/>
+   <fm_source_new>*******************************************************************************
+* Copyright 2007 AppliCon A/S
+*
+* This file is part of Detroubulator.
+*
+* Detroubulator is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* Detroubulator is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Detroubulator; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*
+*******************************************************************************
+
+
+
+
+  DATA:
+    l_ns  TYPE mpp_mapns,
+    l_name TYPE mpp_mapname,
+    l_tmp(32),
+    l_vers TYPE mpp_version_id,
+    l_sp TYPE mp3_version_sp,
+    l_step TYPE smppmap3.
+
+
+  MOVE namespace TO l_ns.
+  MOVE prog TO l_name.
+  MOVE swcv TO l_tmp.
+  TRANSLATE l_tmp TO UPPER CASE.
+  CALL FUNCTION &apos;GUID_CONVERT&apos;
+   EXPORTING
+*         IV_GUID_X16                  =
+*         IV_GUID_C22                  =
+     iv_guid_c32                  = l_tmp
+   IMPORTING
+     ev_guid_x16                  = l_vers
+*         EV_GUID_C22                  =
+*         EV_GUID_C32                  =
+*       EXCEPTIONS
+*         NO_UNICODE_SUPPORT_YET       = 1
+*         PARAMETERS_ERROR             = 2
+*         OTHERS                       = 3
+            .
+  IF sy-subrc &lt;&gt; 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*         WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+
+  l_sp = 0.
+  SUBTRACT 1 FROM l_sp.
+  CALL METHOD cl_mapping_cache3=&gt;select_ifmapping_by_name
+    EXPORTING
+      p_mapns      = l_ns
+      p_mapname    = l_name
+      p_version_id = l_vers
+      p_version_sp = l_sp
+    IMPORTING
+      p_tab        = steps.</fm_source_new>
+  </functionmodule>
+ </functionmodules>
+</FUGR>

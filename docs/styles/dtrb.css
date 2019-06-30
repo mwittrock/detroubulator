@@ -1,0 +1,134 @@
+
+body
+{
+	margin: 20px;
+	background-color: #E6EAE9;
+	list-style-type: square;
+}
+
+h1 {
+	font: 32px "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	letter-spacing: 1px;
+	margin: 0px;
+	color: #4d6897;
+}
+
+h2 {
+	font: 24px "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	letter-spacing: 1px;
+	margin: 0px;
+	color: #4d6897;
+}
+
+h2 code {
+	font: 20px "Courier New", "Courier New", "Courier", monospace;
+}
+
+h3 {
+	font: 20px "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	letter-spacing: 1px;
+	margin: 0px;
+	color: #4d6897;
+}
+
+a {
+	color: #4d6897;
+}
+
+p {
+	font: 14px "Trebuchet MS", Helvetica, sans-serif;
+	margin: 0px;
+	padding-bottom: 10px;
+}
+
+li {
+	font: 14px "Trebuchet MS", Helvetica, sans-serif;
+}
+
+ol
+{
+	margin-bottom: 20px;
+}
+
+pre
+{
+    border: dashed 1px black;
+    overflow: auto;
+    padding: 15px;
+    padding-bottom: 0px;
+	background: white;
+	color : black;
+	background-color: #f0f0f0;
+	font: 13px "Courier New", "Courier New", "Courier", monospace;
+}
+
+code {
+	font: 13px "Courier New", "Courier New", "Courier", monospace;
+}
+
+#wrapper
+{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-top: 1px solid #CCC;
+	border-left: 1px solid #CCC;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+	background-color: #FFFFFF;
+}
+
+.stdtable {
+	border-top: 1px solid #CCC;
+	border-left: 0px;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+	margin-bottom: 20px;
+}
+
+.stdtable th {
+	font: 14px "Trebuchet MS", Helvetica, sans-serif;
+	font-weight: 700;
+	background: #f0f0f0;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-left: 1px solid #CCC;
+	margin: 0px;
+}
+
+.stdtable td {
+	font: 14px "Trebuchet MS", Helvetica, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-left: 1px solid #CCC;
+	border-top: 1px solid #CCC;
+	margin: 0px;
+}
+
+.emptytable {
+	margin-bottom: 20px;
+}
+
+.emptytable th {
+	font: 14px "Trebuchet MS", Helvetica, sans-serif;
+	font-weight: 700;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin: 0px;
+}
+
+.emptytable td {
+	font: 14px "Trebuchet MS", Helvetica, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin: 0px;
+}

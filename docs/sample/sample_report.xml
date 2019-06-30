@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testreport>
+	<header>
+		<program>Message mapping BookingOrder_Agency2AirlineIDoc</program>
+		<server>Host srv0123.yourdomain.com, sys.nr. 00, client 100</server>
+		<started>Wed Sep 06 22:04:42 CEST 2006</started>
+		<finished>Wed Sep 06 22:04:43 CEST 2006</finished>
+		<exectime>
+			<millis>241</millis>
+			<seconds>0,24</seconds>
+		</exectime>
+		<testcases>1</testcases>
+		<assertions>
+			<passed>2</passed>
+			<failed>2</failed>
+		</assertions>
+	</header>
+	<details>
+		<failure>
+			<input>
+				<filename>sample_input.xml</filename>
+				<url>file://sample_input.xml</url>
+			</input>
+			<output>
+				<filename>Dump1.xml</filename>
+				<url>file://Dump1.xml</url>
+			</output>
+			<messages>
+				<message>There should be exactly one E1BPSBOAGN element</message>
+				<message>Passenger name incorrectly concatenated</message>
+			</messages>
+		</failure>
+	</details>
+</testreport>

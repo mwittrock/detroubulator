@@ -1,0 +1,136 @@
+﻿<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - README</title>
+		<link rel="stylesheet" type="text/css" href="docs/styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - README</h1>
+			<p>Detroubulator is a software tool for automated unit testing of SAP XI mapping programs. This file contains a brief overview of the tool. For more in-depth information, please refer to the <a href="docs/index.html">documentation library</a>. For an overview of new features in version 1.1, please refer to <a href="CHANGES.html"><code>CHANGES.html</code></a>.</p>
+	
+			<ul>
+				<li><a href="#what_is_detroubulator">What is Detroubulator?</a></li>
+				<li><a href="#how_does_it_work">How does it work?</a></li>
+				<li><a href="#who_is_it_for">Who is it for?</a></li>
+				<li><a href="#system_requirements">System requirements</a></li>
+				<li><a href="#contents_of_the_archive">Contents of the archive</a></li>
+				<li><a href="#installation_and_setup">Installation and setup</a></li>
+				<li><a href="#running_detroubulator">Running Detroubulator</a></li>
+				<li><a href="#known_issues_with_this_version">Known issues with this version</a></li>
+				<li><a href="#on_the_horizon">On the horizon</a></li>
+				<li><a href="#contributors">Contributors</a></li>
+				<li><a href="#license">License</a></li>
+			</ul>
+	
+			<h2><a id="what_is_detroubulator">What is Detroubulator?</a></h2>
+			<p>Unit testing your mapping programs is an important part of SAP XI development. However, unit testing manually in the Integration Builder is a time-consuming and error-prone task. Furthermore, it's a task that must, in an ideal world at least, be done every time a change is made to the mapping program. Detroubulator lets you write your unit tests once and for all and run them at the press of a button. The minimal effort required to run your unit tests means that testing can become an integrated part of development rather than an effort that only takes place when development is complete. Having a suite of unit tests available also makes it easier and safer to make changes to an existing mapping program; running your test suite at each step of the way builds confidence that the changes made to the mapping program didn't inadvertently introduce errors.</p>
+	
+			<h2><a id="how_does_it_work">How does it work?</a></h2>
+			<p>Every test case that you want to execute is stored in the so-called <em>test file</em>, which is a simple XML document, that also holds information about the mapping program under test and the XI server it runs on. Each test case refers to an input document and contains a number of assertions about the result of executing the mapping program with the provided input. When the Detroubulator tool is executed from the command line of your local machine, it reads the test file, passes each input document to the remote XI server and evaluates each assertion against the mapping program's output. If a test fails, its details will be reported. How they're reported is configurable. One option is to generate an HTML report containing the test results. Another option is to have the results output directly to the command line.</p>
+	
+			<h2><a id="who_is_it_for">Who is it for?</a></h2>
+			<p>Detroubulator is aimed primarily at developers. To make the most of the tool, you need to be comfortable working at the command line and editing XML documents. More importantly, in order to write your own tests, you need a good grasp of the XPath language. For information on how to get started with XPath, please see <a href="docs/FAQ.html#testfile_4">&quot;Where can I learn more about XPath?&quot;</a> in the FAQ.</p>		
+	
+			<h2><a id="system_requirements">System requirements</a></h2>
+			<p>Detroubulator works with SAP XI 3.0/PI 7.0 servers. In order to run the tool, you need a Java 6 runtime, the SAP JCo libraries installed on your system and a copy of the <code>aii_map_api.jar</code> file. For information on where to locate the JAR file, please refer to the <a href="docs/FAQ.html#sapxi_1">FAQ</a>.</p>
+	
+			<h2><a id="contents_of_the_archive">Contents of the archive</a></h2>
+			<p>The Detroubulator archive contains the following files:</p>
+		
+			<table class="emptytable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><code>abap/</code></td>
+					<td>ABAP code contained in a SAPlink slinky file.</td>
+				</tr>
+				<tr>
+					<td><code>bin/</code></td>
+					<td>OS/shell-specific launch scripts.</td>
+				</tr>
+				<tr>
+					<td><code>docs/</code></td>
+					<td>Detroubulator documentation.</td>
+				</tr>
+				<tr>
+					<td><code>docs/sample</code></td>
+					<td>Sample files to help you get started.</td>
+				</tr>
+				<tr>
+					<td><code>lib/</code></td>
+					<td>Required libraries.</td>
+				</tr>
+				<tr>
+					<td><code>LICENSE</code></td>
+					<td>The full text of the GNU General Public License (GPL).</td>
+				</tr>
+				<tr>
+					<td><code>README.html</code></td>
+					<td>This file.</td>
+				</tr>
+				<tr>
+					<td><code>$source.archive$</code></td>
+					<td>The Detroubulator Java source code.</td>
+				</tr>
+			</table>
+		
+			<h2><a id="installation_and_setup">Installation and setup</a></h2>
+			<p>Installing Detroubulator is straightforward:</p>
+			<ol>
+				<li>Unpack the <code>$release.archive$</code> archive. It contains the <code>$inst.dir$</code> directory, which you can move to a location of your choice.</li>
+				<li>Add the <code>$inst.dir$/bin</code> directory to your path.</li>
+				<li>Copy the <code>aii_map_api.jar</code> file from your XI server to the <code>$inst.dir$/lib</code> directory</li>
+				<li>Install the Detroubulator function modules on your XI system (optional)</li>
+			</ol>
+			<p>Installing the Detroubulator function modules is required if you want to test ABAP mapping programs, ABAP XSLT mapping programs or interface mappings. For more information on how to install them, please refer to <a href="docs/FAQ.html#installrun_9">&quot;How do I install the Detroubulator function modules?&quot;</a> in the FAQ. Keep in mind that you need to have the SAP JCo libraries installed on your system in order to run Detroubulator. Download SAP JCo for your platform from <a href="http://service.sap.com/connectors">service.sap.com/connectors</a> (requires an SAP Service Marketplace user) and follow the platform-specific installation instructions. After installing JCo, the <code>sapjco.jar</code> file should be in your class path. For answers to installation related questions, please refer to the <a href="docs/FAQ.html#installrun">FAQ</a>.</p>
+			
+			<h2><a id="running_detroubulator">Running Detroubulator</a></h2>
+			<p>Detroubulator can be executed in two ways: By running one of the launch scripts located in the <code>bin</code> directory from the command line or by executing the <code>main</code> method of the <code>org.detroubulator.core.Launcher</code> class. Detroubulator assumes that your test file is located in the current directory and that it is named <code>test.xml</code>. If this isn't the case, you need to pass the path to your test file as a command line argument. For a complete list of supported command line options, run Detroubulator with the <code>-help</code> option.</p>
+			<p>This release contains the following launch scripts:</p>
+
+			<table class="stdtable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<th class="left">Operating system/shell</td>
+					<th class="mdlrght">Script</td>
+				</tr>
+				<tr>
+					<td class="leftlstrow">Windows XP</td>
+					<td class="mdlrghtlstrow"><code>dtrb.cmd</code></td>
+				</tr>
+			</table>
+
+			<p>For more information on running Detroubulator by executing the <code>main</code> method of the <code>org.detroubulator.core.Launcher</code> class, please refer to the <a href="docs/FAQ.html#installrun_5">FAQ</a>.</p>
+	
+			<h2><a id="known_issues_with_this_version">Known issues with this version</a></h2>
+			<p>This section contains a list of bugs and other issues that managed to sneak into this version of Detroubulator.</p>
+	
+			<h3>Empty strings in transformation parameters</h3>
+			<p>It's not currently possible to pass an empty string as the value of a transformation parameter. The reason for this is that empty strings cannot be passed to ABAP function modules (Detroubulator executes mapping programs by calling an RFC in the ABAP stack). In most circumstances, this will probably not be an issue. However, if your mapping program tests for empty strings in transformation parameters in order to determine whether it's being executed from within the Integration Builder, your logic will fail. We're working on making this problem go away. For more information on how to pass transformation parameters to mapping programs, please refer to the <a href="docs/TestFileTour.html">test file documentation</a>.</p>
+			
+			<h2><a id="on_the_horizon">On the horizon</a></h2>
+			<p>Detroubulator is a work in progress. The following features are planned for future versions (subject to change):</p>
+			<ul>
+				<li>Store shared assertions in an external file</li>
+				<li>Identify Software Component Versions by name rather than object ID</li>
+				<li>Testing inactive mapping objects</li>
+				<li>Launch scripts for more shells/operating systems</li>
+			</ul>
+
+			<h2><a id="contributors">Contributors</a></h2>
+			<p>The following people contributed to this release:</p>
+			<ul>
+				<li>Morten Wittrock</li>
+				<li>Thorsten Nordholm S&oslash;birk</li>
+				<li>J&oslash;rgen Michelsen</li>
+				<li>Alessandro Guarneri</li>
+				<li>Ricardo Andres Maienza</li>
+			</ul>
+
+			<h2><a id="license">License</a></h2>
+			<p>Detroubulator is free software, licensed under the GNU General Public License (GPL). You'll find the full text of the license in the file called <code>LICENSE</code>, located in the root of the Detroubulator archive. For more information on the GPL, please visit the <a href="http://www.gnu.org/copyleft/gpl.html">GPL homepage</a>.</p>
+
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite>
+	<server>
+		<configuration>
+			<parameter name="host">e.g. srv0123.yourdomain.com</parameter>
+			<parameter name="gateway">e.g. sapgw00 or 3300</parameter>
+			<parameter name="client">e.g. 100</parameter>
+			<parameter name="user">e.g. bob</parameter>
+			<parameter name="sysnum">e.g. 00</parameter>
+			<parameter name="progid">e.g. AI_RUNTIME_XI3</parameter>
+		</configuration>
+	</server>
+	<program type="message">
+		<configuration>
+			<parameter name="name">BookingOrder_Agency2AirlineIDoc</parameter>
+			<parameter name="ns">http://sap.com/xi/XI/Demo/Agency</parameter>
+			<parameter name="swcv.id">3b787a8035c111d6bbe0efe50a1145a5</parameter>
+		</configuration>
+	</program>
+	<reporting>
+		<testreport type="console">
+			<configuration>
+				<parameter name="dumpdir">dumped_output</parameter>
+			</configuration>
+		</testreport>
+		<testreport type="xml">
+			<configuration>
+				<parameter name="file">sample_report.xml</parameter>
+				<parameter name="dumpdir">dumped_output</parameter>
+			</configuration>
+		</testreport>
+		<testreport type="html">
+			<configuration>
+				<parameter name="file">sample_report.html</parameter>
+				<parameter name="dumpdir">dumped_output</parameter>
+			</configuration>
+		</testreport>
+	</reporting>
+	<tests>
+		<testcase>
+			<inputdocument>sample_input.xml</inputdocument>
+			<assertions>
+				<content xpath="count(/FLIGHTBOOKING_CREATEANDRESP01/IDOC/E1BPSBOAGN)" expect="1">There should be exactly one E1BPSBOAGN element</content>
+				<content xpath="count(/FLIGHTBOOKING_CREATEANDRESP01/IDOC/E1BPSBONEW)" expect="1">There should be exactly one E1BPSBONEW element</content>
+				<content xpath="/FLIGHTBOOKING_CREATEANDRESP01/IDOC/E1BPSBONEW/PASSNAME" expect="Fred Flyer">Passenger name incorrectly concatenated</content>
+				<content xpath="/FLIGHTBOOKING_CREATEANDRESP01/IDOC/E1BPSBONEW/FLIGHTDATE" expect="20040701">Incorrect FLIGHTDATE format</content>
+			</assertions>
+		</testcase>
+	</tests>
+</testsuite>

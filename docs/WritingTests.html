@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Detroubulator $version$ - Writing Tests</title>
+		<link rel="stylesheet" type="text/css" href="styles/dtrb.css" />
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<h1>Detroubulator $version$ - Writing Tests</h1>
+	
+			<p>This document is intended to give an introduction to writing <em>valuable</em> tests for mapping programs. Writing trivial but ultimately non-valuable tests is quite simple and these could even be generated automatically. Valuable tests will normally test either some non-trivial aspect of the mapping or an aspect that is at risk of breaking if changes are made later. So this document will try to address the question of what constitutes a valuable test or <em>where do you get the most bang for your testing buck?</em></p>
+	
+			<h2>Avoid trivial tests</h2>
+	
+			<p>As already stated, don't waste time writing tests for trivial aspects of your mapping. This will only lead you to writing scores of simple test expressions that don't add value in terms of regression testing after changes. For instance, there is usually not much value in writing a test expression for every element value in your target document. Many of these will be copied directly from the input document and their enclosing elements will often have the same cardinality in both the source and target documents. Instead, focus on difficult or tricky aspects of the mapping and create exhaustive test cases and test expressions for these.</p>
+	
+			<h2>Concentrate on more difficult aspects</h2>
+	
+			<p>So what constitutes a difficult og tricky aspect of a mapping? The short answer, of course, is: <em>it depends</em>. But as alluded to in the previous paragraph, you should start by looking for target elements whose values are derived from multiple source elements or whose cardinality is derived in a non-trivial way. Examples of the former include concatenations of multiple source element values and conditional selection of source element values. Test expressions for element values are often simple expressions comparing the target element value with a constant. Examples of the latter include source elements whose values must be duplicated multiple times in the target document and conditional generation of entire target sub-trees. Cardinality-related test expressions often utilise the XPath <code>count()</code> function and compare the result to a constant integer value.</p>
+	
+			<p>In some cases, your choice of mapping tool, that is whether you are using message mapping or XSLT, may dictate what constitutes a difficult aspect. For instance, the queue and context concepts in message mapping make a number of cardinality-related aspects of mappings very difficult to accomplish correctly. In contrast these same aspects are usually quite trivial to accomplish using XSLT. Therefore you will be most likely to write exhaustive tests for these things if you are using message mapping. While this is perfectly natural, you should always try to write tests that will be useful regardless of the choice of mapping tool, because although it may seem unlikely you could be forced to change tools in the future. And wouldn't it be nice, then, to have a complete set of tests to help you quickly validate the replacement mapping?</p>
+	
+			<h2>Test coverage</h2>
+	
+			<p>Finally, whatever kinds of tests you are writing it is extremely important to include test cases for all relevant "limits" of the test at hand. For instance, say a particular target element must occur once for every 3 occurrences of a particular source element. In order to adequately test that this works as intended, you should test using input documents containing a variety of different occurrences of the source element. Otherwise you cannot be sure that the mapping will work as intended in all cases. This is completely analogous to the way software unit testing is often performed where e.g. a loop construct is tested using at least test cases where the loop will be executed once, twice and many times.</p>
+	
+			<p>While it is a good idea to try to cover as much ground as possible with any given test document, generally speaking, one test document is never enough. Oftentimes, a mapping program that has been tested successfully with only a single test document will crash miserably on the very first document presented during integration testing. This doesn't exactly inspire confidence, so don't fall into that trap. If no one else can supply you with good test documents for unit testing, create your own!</p>
+
+		</div>
+
+	</body>
+</html>
+

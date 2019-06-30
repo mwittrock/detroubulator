@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:BookingOrderRequest xmlns:ns="http://sap.com/xi/XI/Demo/Agency">
+	<AgencyID>00000110</AgencyID>
+	<OrderNumber>00000024</OrderNumber>
+	<FlightClass>F</FlightClass>
+	<FlightID>
+		<AirlineID>AA</AirlineID>
+		<ConnectionID>0017</ConnectionID>
+		<FlightDate>2004-07-01</FlightDate>
+	</FlightID>
+	<PassengerData>
+		<Surname>Flyer</Surname>
+		<FirstName>Fred</FirstName>
+		<Birthdate>1968-02-29</Birthdate>
+	</PassengerData>
+</ns:BookingOrderRequest>
